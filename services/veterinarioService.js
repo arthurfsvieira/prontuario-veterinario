@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { veterinarios } = require('../models/data');
+const { veterinarios, receitas } = require('../models/data');
 
 function createVeterinario({ nome, email, senha, crm_vet }) {
   if (!nome || !email || !senha || !crm_vet) throw { status: 400, message: 'Campos obrigatórios ausentes' };
@@ -12,4 +12,16 @@ function createVeterinario({ nome, email, senha, crm_vet }) {
   return { id: vet.id, nome: vet.nome, email: vet.email, crm_vet: vet.crm_vet };
 }
 
-module.exports = { createVeterinario };
+function deleteVeterinario(id) {
+  const index = veterinarios.findIndex(v => String(v.id) === String(id));
+  if (index === -1) throw { status: 404, message: 'Veterinário não encontrado' };
+  // remove receitas authored by this veterinarian
+  for (let i = receitas.length - 1; i >= 0; i--) {
+    if (String(receitas[i].veterinario_id) === String(id)) receitas.splice(i, 1);
+  }
+  veterinarios.splice(index, 1);
+  return { message: 'Veterinário removido' };
+}
+
+module.exports = { createVeterinario, deleteVeterinario };
+

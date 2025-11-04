@@ -1,4 +1,4 @@
-const { createTutor, listTutores, getTutorById } = require('../services/tutorService');
+const { createTutor, listTutores, getTutorById, deleteTutor } = require('../services/tutorService');
 
 function create(req, res) {
   try {
@@ -27,4 +27,15 @@ function getById(req, res) {
   }
 }
 
-module.exports = { create, list, getById };
+
+function remove(req, res) {
+  try {
+    const result = deleteTutor(req.params.id);
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(err.status || 500).json({ message: err.message || 'Erro interno' });
+  }
+}
+
+module.exports = { create, list, getById, remove };
+

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { create, list, getById, update } = require('../controllers/animalController');
+const { create, list, getById, update, remove } = require('../controllers/animalController');
 const { authenticateJWT, authorizeRole, authorizeOwnership } = require('../middlewares/auth');
 
 // Create animal - only veterinario
@@ -14,5 +14,8 @@ router.get('/:id', authenticateJWT, authorizeOwnership('animal'), getById);
 
 // Update animal - only veterinarian
 router.put('/:id', authenticateJWT, authorizeRole('veterinario'), update);
+
+// Delete animal - only veterinarian
+router.delete('/:id', authenticateJWT, authorizeRole('veterinario'), remove);
 
 module.exports = router;

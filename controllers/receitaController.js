@@ -1,4 +1,4 @@
-const { createReceita, listReceitasByAnimal } = require('../services/receitaService');
+const { createReceita, listReceitasByAnimal, deleteReceita } = require('../services/receitaService');
 
 function create(req, res) {
   try {
@@ -18,4 +18,14 @@ function listByAnimal(req, res) {
   }
 }
 
-module.exports = { create, listByAnimal };
+
+function remove(req, res) {
+  try {
+    const result = deleteReceita(req.params.id);
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(err.status || 500).json({ message: err.message || 'Erro interno' });
+  }
+}
+
+module.exports = { create, listByAnimal, remove };

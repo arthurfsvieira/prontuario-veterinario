@@ -1,4 +1,4 @@
-const { animais } = require('../models/data');
+const { animais, receitas } = require('../models/data');
 
 function createAnimal({ nome, idade, sexo, especie, raca, peso, tutor_id }) {
   if (!nome || idade === undefined || !sexo || !especie || !raca || peso === undefined || !tutor_id) {
@@ -30,4 +30,16 @@ function updateAnimal(id, data) {
   return animal;
 }
 
-module.exports = { createAnimal, listAnimais, getAnimalById, updateAnimal };
+function deleteAnimal(id) {
+  const index = animais.findIndex(a => String(a.id) === String(id));
+  if (index === -1) throw { status: 404, message: 'Animal não encontrado' };
+  // remove receitas for this animal
+  for (let i = receitas.length - 1; i >= 0; i--) {
+    if (String(receitas[i].animal_id) === String(id)) receitas.splice(i, 1);
+  }
+  animais.splice(index, 1);
+  return { message: 'Animal removido' };
+}
+
+module.exports = { createAnimal, listAnimais, getAnimalById, updateAnimal, deleteAnimal };
+

@@ -50,6 +50,32 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
 
+  /veterinarios/{id}:
+    delete:
+      summary: Deletar veterinário (veterinário somente)
+      tags: [Veterinarios]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Veterinário removido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   /tutores:
     post:
       summary: Criar tutor (veterinário somente)
@@ -114,6 +140,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Tutor'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Deletar tutor (veterinário somente)
+      tags: [Tutores]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tutor removido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -224,6 +274,30 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Deletar animal (veterinário somente)
+      tags: [Animais]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Animal removido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /receitas:
     post:
@@ -272,6 +346,32 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Receita'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /receitas/{id}:
+    delete:
+      summary: Deletar receita (veterinário somente)
+      tags: [Receitas]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Receita removida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -368,6 +468,12 @@ components:
       required: [email, senha]
 
     ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+    MessageResponse:
       type: object
       properties:
         message:

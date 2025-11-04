@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { tutores } = require('../models/data');
+const { tutores, animais, receitas } = require('../models/data');
 
 function createTutor({ nome, email, telefone, senha }) {
   if (!nome || !email || !telefone || !senha) throw { status: 400, message: 'Campos obrigatórios ausentes' };
@@ -23,4 +23,23 @@ function getTutorById(id) {
   return rest;
 }
 
-module.exports = { createTutor, listTutores, getTutorById };
+function deleteTutor(id) {
+  const index = tutores.findIndex(t => String(t.id) === String(id));
+  if (index === -1) throw { status: 404, message: 'Tutor não encontrado' };
+  // remove animais of this tutor and associated receitas
+  for (let i = animais.length - 1; i >= 0; i--) {
+    if (String(animais[i].tutor_id) === String(id)) {
+      const animalId = animais[i].id;
+      // remove receitas for this animal
+      for (let j = receitas.length - 1; j >= 0; j--) {
+        if (String(receitas[j].animal_id) === String(animalId)) receitas.splice(j, 1);
+      }
+      animais.splice(i, 1);
+    }
+  }
+  tutores.splice(index, 1);
+  return { message: 'Tutor removido' };
+}
+
+module.exports = { createTutor, listTutores, getTutorById, deleteTutor };
+

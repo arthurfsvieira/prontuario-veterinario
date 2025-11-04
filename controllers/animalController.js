@@ -1,4 +1,4 @@
-const { createAnimal, listAnimais, getAnimalById, updateAnimal } = require('../services/animalService');
+const { createAnimal, listAnimais, getAnimalById, updateAnimal, deleteAnimal } = require('../services/animalService');
 
 function create(req, res) {
   try {
@@ -36,4 +36,14 @@ function update(req, res) {
   }
 }
 
-module.exports = { create, list, getById, update };
+
+function remove(req, res) {
+  try {
+    const result = deleteAnimal(req.params.id);
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(err.status || 500).json({ message: err.message || 'Erro interno' });
+  }
+}
+
+module.exports = { create, list, getById, update, remove };

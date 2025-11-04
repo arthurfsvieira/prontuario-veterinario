@@ -121,6 +121,30 @@ curl -X POST http://localhost:3000/tutores -H "Authorization: Bearer <TOKEN>" -H
 curl -X POST http://localhost:3000/animais -H "Authorization: Bearer <TOKEN>" -H "Content-Type: application/json" -d '{"nome":"Rex","idade":5,"sexo":"M","especie":"Canina","raca":"Vira-Lata","peso":12.5,"tutor_id":1}'
 ```
 
+- Deletar veterinário (usar token de veterinário)
+
+```bash
+curl -X DELETE http://localhost:3000/veterinarios/1 -H "Authorization: Bearer <TOKEN>"
+```
+
+- Deletar tutor (usar token de veterinário)
+
+```bash
+curl -X DELETE http://localhost:3000/tutores/1 -H "Authorization: Bearer <TOKEN>"
+```
+
+- Deletar animal (usar token de veterinário)
+
+```bash
+curl -X DELETE http://localhost:3000/animais/1 -H "Authorization: Bearer <TOKEN>"
+```
+
+- Deletar receita (usar token de veterinário)
+
+```bash
+curl -X DELETE http://localhost:3000/receitas/1 -H "Authorization: Bearer <TOKEN>"
+```
+
 Swagger
 
 Abra `/docs` para visualizar a documentação e exemplos de request/response.

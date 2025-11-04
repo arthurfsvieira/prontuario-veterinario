@@ -16,4 +16,12 @@ function listReceitasByAnimal(animalId) {
   return receitas.filter(r => String(r.animal_id) === String(animalId));
 }
 
-module.exports = { createReceita, listReceitasByAnimal };
+
+function deleteReceita(id) {
+  const index = receitas.findIndex(r => String(r.id) === String(id));
+  if (index === -1) throw { status: 404, message: 'Receita não encontrada' };
+  receitas.splice(index, 1);
+  return { message: 'Receita removida' };
+}
+
+module.exports = { createReceita, listReceitasByAnimal, deleteReceita };

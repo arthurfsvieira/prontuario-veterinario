@@ -1,4 +1,4 @@
-# Prontuário Veterinário (API REST - em memória)
+# Prontuário Veterinário (API REST)
 
 # 🐾 Prontuário Veterinário — API REST (Node.js + Express)
 API para gestão de veterinários, tutores, animais e receitas, com autenticação JWT, documentação Swagger e testes automatizados/performance.

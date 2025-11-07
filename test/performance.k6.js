@@ -6,10 +6,12 @@ export let options = {
   duration: '10s',
 };
 
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InZldGVyaW5hcmlvIiwiaWF0IjoxNzYyNT';
+
 export default function () {
   // Teste de performance GET /animais
   let res = http.get('http://localhost:3000/animais', {
-    headers: { Authorization: 'Bearer TOKEN_AQUI' },
+    headers: { Authorization: `Bearer ${TOKEN}` },
   });
   check(res, {
     'status is 200': (r) => r.status === 200,

@@ -1,12 +1,11 @@
+
 const { request, authHeader } = require('./helpers');
 const fixtures = require('./fixtures');
 const app = require('../server');
-const expect = require('chai').expect;
+
+
 const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../server');
 const expect = chai.expect;
-chai.use(chaiHttp);
 
 let vetToken, tutorToken, animalId, tutorId, receitaId;
 

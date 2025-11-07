@@ -1,150 +1,94 @@
 # Prontuário Veterinário (API REST - em memória)
 
-API simples escrita em Node.js + Express para gerenciar veterinários, tutores, animais e receitas em memória (arrays JS). Inclui autenticação JWT e documentação Swagger em `/docs`.
+# 🐾 Prontuário Veterinário — API REST (Node.js + Express)
+API para gestão de veterinários, tutores, animais e receitas, com autenticação JWT, documentação Swagger e testes automatizados/performance.
 
-Instalação
+---
 
-1. Instale dependências:
+## 🚀 Instalação e Execução
 
-```bash
-npm install
-```
-
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
 2. Inicie a API:
+   ```bash
+   npm start
+   ```
+   - API: http://localhost:3000
+   - Swagger: http://localhost:3000/docs
+
+---
+
+## 🔑 Autenticação
+
+- Faça login em `/auth/login` com `{ "email": "...", "senha": "..." }` para receber um token JWT.
+- Use o header: `Authorization: Bearer <token>` nas rotas protegidas.
+
+---
+
+## 📚 Endpoints Principais
+
+| Método | Rota                        | Acesso         | Descrição                  |
+|--------|-----------------------------|----------------|----------------------------|
+| POST   | /auth/login                 | Público        | Login (veterinário/tutor)  |
+| POST   | /veterinarios               | Público        | Criar veterinário          |
+| POST   | /tutores                    | Veterinário    | Criar tutor                |
+| GET    | /tutores                    | Veterinário    | Listar tutores             |
+| GET    | /tutores/:id                | Vet/Tutor dono | Visualizar tutor           |
+| POST   | /animais                    | Veterinário    | Cadastrar animal           |
+| GET    | /animais                    | Veterinário    | Listar animais             |
+| GET    | /animais/:id                | Vet/Tutor dono | Visualizar animal          |
+| PUT    | /animais/:id                | Veterinário    | Atualizar animal           |
+| DELETE | /animais/:id                | Veterinário    | Deletar animal             |
+| POST   | /receitas                   | Veterinário    | Criar receita              |
+| GET    | /receitas/:animalId         | Vet/Tutor dono | Listar receitas do animal  |
+| DELETE | /receitas/:id               | Veterinário    | Deletar receita            |
+
+---
+
+## 📝 Exemplo de Uso (curl)
 
 ```bash
-npm start
+# Login (veterinário)
+curl -X POST http://localhost:3000/auth/login -H "Content-Type: application/json" -d '{"email":"vet@teste.com","senha":"123456"}'
 ```
 
-A API ficará disponível em http://localhost:3000 e a documentação Swagger em http://localhost:3000/docs
+---
 
-Endpoints principais
+## 🧪 Testes Automatizados
 
-- POST /auth/login — login (veterinário ou tutor) — público
-- POST /veterinarios — criar veterinário — público
-- POST /tutores — criar tutor — veterinário
-- GET /tutores — listar tutores — veterinário
-- GET /tutores/:id — visualizar tutor — veterinário ou tutor dono
-- POST /animais — cadastrar animal — veterinário
-- GET /animais — listar animais — veterinário
-- GET /animais/:id — visualizar animal — veterinário ou tutor dono
-- PUT /animais/:id — atualizar animal — veterinário
-- POST /receitas — criar receita — veterinário
-- GET /receitas/:animalId — listar receitas de um animal — veterinário ou tutor dono
+- Execute todos os testes:
+  ```bash
+  npx mocha test/api.test.js
+  ```
+- Todos os requisitos e fluxos principais são validados.
 
-Autenticação
+## ⚡ Teste de Performance
 
-Use o endpoint `POST /auth/login` com um JSON { "email": "...", "senha": "..." }. Você receberá um token JWT. Envie o header `Authorization: Bearer <token>` nas requisições protegidas.
+- Script: `test/performance.k6.js`
+- Antes de rodar, gere um token JWT válido e insira no script.
+  ```bash
+  k6 run test/performance.k6.js
+  ```
+- O relatório de bugs/ajustes de performance está em `BUG_REPORT.md`.
 
-Exemplos de payloads
+---
 
-- Criar veterinário (POST /veterinarios)
+## 🐞 Relatório de Bugs
 
-```json
-{
-  "nome": "Dr. Fulano",
-  "email": "vet@exemplo.com",
-  "senha": "senha123",
-  "crm_vet": "CRM12345"
-}
-```
+- Veja `BUG_REPORT.md` para histórico de execuções, falhas e sugestões de correção.
 
-- Criar tutor (POST /tutores)
+---
 
-```json
-{
-  "nome": "João",
-  "email": "joao@ex.com",
-  "telefone": "99999-9999",
-  "senha": "senha123"
-}
-```
+## 📖 Documentação Completa
 
-- Criar animal (POST /animais)
+- Acesse `/docs` para Swagger/OpenAPI com exemplos de request/response.
 
-```json
-{
-  "nome": "Rex",
-  "idade": 5,
-  "sexo": "M",
-  "especie": "Canina",
-  "raca": "Vira-Lata",
-  "peso": 12.5,
-  "tutor_id": 1
-}
-```
+---
 
-- Atualizar animal (PUT /animais/:id)
+## 👨‍💻 Observações
 
-```json
-{
-  "peso": 13.0
-}
-```
-
-- Criar receita (POST /receitas)
-
-```json
-{
-  "data": "2025-11-04",
-  "descricao": "Tratamento para parasitas",
-  "medicamento": "Antiparasitario",
-  "dosagem": "1 comprimido",
-  "animal_id": 1,
-  "veterinario_id": 1
-}
-```
-
-Exemplos curl
-
-- Login
-
-```bash
-curl -X POST http://localhost:3000/auth/login -H "Content-Type: application/json" -d '{"email":"vet@exemplo.com","senha":"senha123"}'
-```
-
-- Criar veterinário
-
-```bash
-curl -X POST http://localhost:3000/veterinarios -H "Content-Type: application/json" -d '{"nome":"Dr. Fulano","email":"vet@exemplo.com","senha":"senha123","crm_vet":"CRM12345"}'
-```
-
-- Criar tutor (usar token de veterinário)
-
-```bash
-curl -X POST http://localhost:3000/tutores -H "Authorization: Bearer <TOKEN>" -H "Content-Type: application/json" -d '{"nome":"João","email":"joao@ex.com","telefone":"99999-9999","senha":"senha123"}'
-```
-
-- Criar animal (usar token de veterinário)
-
-```bash
-curl -X POST http://localhost:3000/animais -H "Authorization: Bearer <TOKEN>" -H "Content-Type: application/json" -d '{"nome":"Rex","idade":5,"sexo":"M","especie":"Canina","raca":"Vira-Lata","peso":12.5,"tutor_id":1}'
-```
-
-- Deletar veterinário (usar token de veterinário)
-
-```bash
-curl -X DELETE http://localhost:3000/veterinarios/1 -H "Authorization: Bearer <TOKEN>"
-```
-
-- Deletar tutor (usar token de veterinário)
-
-```bash
-curl -X DELETE http://localhost:3000/tutores/1 -H "Authorization: Bearer <TOKEN>"
-```
-
-- Deletar animal (usar token de veterinário)
-
-```bash
-curl -X DELETE http://localhost:3000/animais/1 -H "Authorization: Bearer <TOKEN>"
-```
-
-- Deletar receita (usar token de veterinário)
-
-```bash
-curl -X DELETE http://localhost:3000/receitas/1 -H "Authorization: Bearer <TOKEN>"
-```
-
-Swagger
-
-Abra `/docs` para visualizar a documentação e exemplos de request/response.
+- O armazenamento é em memória (arrays JS). Dados são perdidos ao reiniciar.
+- Para performance, sempre use um token JWT válido.
+- O projeto inclui exemplos de payloads e comandos no Swagger.

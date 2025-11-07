@@ -181,14 +181,36 @@ Descobrir se os tempos de resposta estão dentro do esperado.
 | Usabilidade | Mensagens de erro padronizadas e amigáveis                            | Mensagens de erro em JSON, campo "message" descritivo, sem stacktrace |
 
 ### 6. Automação de Testes
-| ID  | User Story Relacionada | Condição de Teste Automatizado | Resultado Esperado | Camada |
-|-----|------------------------|-------------------------------|--------------------|--------|
-| US1 | Cadastro de tutores    | Dado que sou veterinário autenticado, quando envio POST /tutores com dados válidos, então recebo 201 e tutor criado | 201, tutor criado | API |
-| US2 | Cadastro de animais    | Dado que sou veterinário autenticado, quando envio POST /animais com dados válidos, então recebo 201 e animal criado | 201, animal criado | API |
-| US3 | Cadastro de receitas   | Dado que sou veterinário autenticado, quando envio POST /receitas com dados válidos, então recebo 201 e receita criada | 201, receita criada | API |
-| US4 | Edição/Exclusão        | Dado que sou veterinário autenticado, quando envio PUT/DELETE em entidades existentes, então recebo 200 e entidade alterada/removida | 200, entidade alterada/removida | API |
-| US5 | Visualização (tutor)   | Dado que sou tutor autenticado, quando acesso GET /animais/:id e GET /receitas/:animalId dos meus animais, então recebo 200 e dados corretos | 200, dados corretos | API |
-| US6 | Autenticação           | Dado que envio POST /auth/login com credenciais válidas, então recebo 200 e token JWT; quando acesso rota protegida sem token, recebo 401 | 200 com token, 401 sem token | API |
+
+#### Testes Funcionais (Mocha, Chai, Supertest)
+Os testes automatizados estão em `test/api.test.js` e cobrem as 6 user stories principais:
+- US1: Cadastro de tutores
+- US2: Cadastro de animais
+- US3: Cadastro de receitas
+- US4: Edição/Exclusão de entidades
+- US5: Visualização de animais e receitas (tutor)
+- US6: Autenticação e controle de acesso
+
+**Como rodar:**
+1. Instale as dependências de teste:
+  ```bash
+  npm install --save-dev mocha chai supertest
+  ```
+2. Execute os testes:
+  ```bash
+  npx mocha test/api.test.js
+  ```
+
+#### Testes de Performance (k6)
+O teste de performance está em `test/performance.k6.js` e cobre GET /animais com múltiplos usuários virtuais.
+
+**Como rodar:**
+1. Instale o k6 (https://k6.io/docs/getting-started/installation/)
+2. Gere um token JWT válido e substitua em `performance.k6.js` no campo `Authorization: 'Bearer TOKEN_AQUI'`
+3. Execute:
+  ```bash
+  k6 run test/performance.k6.js
+  ```
 
 ### 7. Mapeamento dos Dados de Teste
 - Testes Manuais e Automatizados do tipo API Rest/Swagger

@@ -40,17 +40,26 @@
 | RNF4| Manutenibilidade | Código modular                 | Separação em camadas (routes, controllers, services, etc)    | Alta       |
 | RNF5| Testabilidade | Testes automatizados            | Scripts de teste automatizados para endpoints principais      | Média      |
 
+
 ## Épicos e User Stories
-| ID   | User Story                                                                 | Prioridade |
-|------|----------------------------------------------------------------------------|------------|
-| EP1  | Como veterinário, quero gerenciar tutores, animais e receitas              | Alta       |
-| EP2  | Como tutor, quero visualizar meus animais e receitas                       | Alta       |
-| US1  | Como veterinário, quero cadastrar tutores para associar animais            | Alta       |
-| US2  | Como veterinário, quero cadastrar animais para tutores                     | Alta       |
-| US3  | Como veterinário, quero cadastrar receitas para animais                    | Alta       |
-| US4  | Como veterinário, quero editar e excluir animais, tutores e receitas       | Média      |
-| US5  | Como tutor, quero visualizar meus próprios animais e receitas              | Alta       |
-| US6  | Como usuário, quero autenticar e acessar rotas conforme meu perfil         | Alta       |
+| ID   | Como (Quem?)         | Quero (O quê?)                                 | Para (Por quê?)                                 | Prioridade |
+|------|----------------------|------------------------------------------------|--------------------------------------------------|------------|
+| EP1  | Veterinário          | Gerenciar tutores                              | Organizar informações dos responsáveis           | Alta       |
+| EP2  | Veterinário          | Gerenciar animais                              | Controlar prontuário dos pacientes               | Alta       |
+| EP3  | Veterinário          | Gerenciar receitas                             | Prescrever e acompanhar tratamentos              | Alta       |
+| EP4  | Veterinário          | Gerenciar usuários (veterinários/tutores)      | Manter controle de acesso                        | Alta       |
+| EP5  | Tutor                | Visualizar meus animais                        | Acompanhar saúde dos meus pets                   | Alta       |
+| EP6  | Tutor                | Visualizar receitas dos meus animais           | Seguir corretamente as prescrições               | Alta       |
+
+### User Stories
+| ID   | Como (Quem?)         | Quero (O quê?)                                 | Para (Por quê?)                                 | Prioridade |
+|------|----------------------|------------------------------------------------|--------------------------------------------------|------------|
+| US1  | Veterinário          | Cadastrar tutores                              | Associar animais a responsáveis                  | Alta       |
+| US2  | Veterinário          | Cadastrar animais                              | Registrar pacientes                              | Alta       |
+| US3  | Veterinário          | Cadastrar receitas                             | Prescrever tratamentos                           | Alta       |
+| US4  | Veterinário          | Editar/excluir animais, tutores e receitas     | Manter dados atualizados                         | Média      |
+| US5  | Tutor                | Visualizar meus próprios animais e receitas    | Acompanhar saúde e tratamentos                   | Alta       |
+| US6  | Usuário (ambos)      | Autenticar e acessar rotas conforme perfil     | Garantir segurança e personalização              | Alta       |
 
 ## Critérios de Aceite
 | Critério | Descrição |
@@ -72,48 +81,114 @@ A história de usuário é considerada pronta para desenvolvimento e testes quan
 ## Plano e Estratégia de Testes
 
 ### 1. Épicos e Estimativa Geral de Esforço em Testes
-| Épico | Esforço |
-|-------|---------|
-| EP1   | 8       |
-| EP2   | 5       |
+| Épico | Descrição | Esforço |
+|-------|-----------|---------|
+| EP1   | Gerenciar tutores (criação, listagem, visualização, exclusão) | Alto    |
+| EP2   | Gerenciar animais (criação, listagem, visualização, edição, exclusão) | Alto    |
+| EP3   | Gerenciar receitas (criação, listagem, exclusão) | Médio   |
+| EP4   | Gerenciar usuários (autenticação, controle de acesso) | Médio   |
+| EP5   | Visualizar animais (tutor) | Baixo   |
+| EP6   | Visualizar receitas (tutor) | Baixo   |
 
-### 2. User Stories e Estimativa de Esforço em Testes
-| Código | Descrição | Esforço |
-|--------|-----------|---------|
-| US1    | Cadastro de tutor | 3 |
-| US2    | Cadastro de animal | 3 |
-| US3    | Cadastro de receita | 2 |
-| US4    | Edição/Exclusão | 2 |
-| US5    | Visualização tutor | 2 |
-| US6    | Autenticação | 2 |
+
+### 2. User Stories e Estimativa de Esforço em Testes (Formato Gherkin)
+
+**US1: Cadastro de tutores**
+Como veterinário
+Quero cadastrar tutores
+Para associar animais a responsáveis
+Esforço: Médio
+
+**US2: Cadastro de animais**
+Como veterinário
+Quero cadastrar animais
+Para registrar pacientes
+Esforço: Médio
+
+**US3: Cadastro de receitas**
+Como veterinário
+Quero cadastrar receitas
+Para prescrever tratamentos
+Esforço: Baixo
+
+**US4: Edição/Exclusão de entidades**
+Como veterinário
+Quero editar e excluir animais, tutores e receitas
+Para manter dados atualizados
+Esforço: Médio
+
+**US5: Visualização de animais e receitas (tutor)**
+Como tutor
+Quero visualizar meus próprios animais e receitas
+Para acompanhar saúde e tratamentos
+Esforço: Baixo
+
+**US6: Autenticação e controle de acesso**
+Como usuário (veterinário ou tutor)
+Quero autenticar e acessar rotas conforme meu perfil
+Para garantir segurança e personalização
+Esforço: Baixo
 
 ### 3. Condições de Teste e Camadas
-| ID | Condição | Resultado Esperado | Camada |
-|----|----------|-------------------|--------|
-| CT1 | POST /tutores com token válido | 201 | API |
-| CT2 | GET /animais/:id por tutor não dono | 403 | API |
-| CT3 | DELETE /receitas/:id por veterinário | 200 | API |
-| CT4 | GET /receitas/:animalId por tutor dono | 200 | API |
-| CT5 | GET /tutores sem token | 401 | API |
+| ID   | User Story Relacionada | Condição | Resultado Esperado | Camada |
+|------|-----------------------|----------|-------------------|--------|
+| CT1  | US1                   | POST /tutores com token válido | 201 | API |
+| CT2  | US5                   | GET /animais/:id por tutor não dono | 403 | API |
+| CT3  | US4                   | DELETE /receitas/:id por veterinário | 200 | API |
+| CT4  | US5                   | GET /receitas/:animalId por tutor dono | 200 | API |
+| CT5  | US6                   | GET /tutores sem token | 401 | API |
 
 ### 4. Missões de Teste Exploratório
-- Test Charter 1: Explore o cadastro de tutores com diferentes dados para descobrir falhas de validação
-- Test Charter 2: Explore a exclusão de entidades e observe efeitos colaterais
-- Test Charter 3: Explore o fluxo de autenticação e manipulação de tokens
+
+**Test Charter 1**
+
+Explore a API de cadastro de tutores
+Com a heurística VADER - Verbs
+Descobrir se métodos HTTP não permitidos retornam erros apropriados.
+
+**Test Charter 2**
+
+Explore endpoints protegidos da API
+Com a heurística VADER - Authorization/Authentication
+Descobrir se tokens inválidos ou ausentes são tratados corretamente.
+
+**Test Charter 3**
+
+Explore a API de cadastro de usuários
+Com a heurística VADER - Data
+Descobrir como a API lida com diferentes tipos e formatos de dados.
+
+**Test Charter 4**
+
+Explore cenários de falha na API
+Com a heurística VADER - Errors
+Descobrir se erros de negócio e validação são tratados corretamente.
+
+**Test Charter 5**
+
+Explore a performance da API
+Com a heurística VADER - Responsiveness
+Descobrir se os tempos de resposta estão dentro do esperado.
 
 ### 5. Testes Não-Funcionais
-| Tipo | Teste | Resultado Esperado |
-|------|-------|-------------------|
-| Segurança | Acesso sem token | 401 |
-| Performance | Resposta em até 2s | <=2s |
-| Usabilidade | Swagger acessível | /docs responde 200 |
+| Tipo        | Teste                                                                 | Resultado Esperado |
+|-------------|-----------------------------------------------------------------------|-------------------|
+| Segurança   | Acesso a endpoints protegidos sem token                               | Deve retornar 401 Unauthorized, sem expor dados sensíveis |
+| Segurança   | Tentativa de acesso com token inválido ou expirado                    | Deve retornar 401 Unauthorized, mensagem clara de erro |
+| Performance | Carga de 100 requisições simultâneas em POST /animais                 | 95% das respostas em até 2 segundos, sem queda do serviço |
+| Performance | Listagem de 1000 animais em GET /animais                              | Resposta em até 2 segundos, sem degradação perceptível |
+| Usabilidade | Documentação Swagger acessível e compreensível                        | /docs responde 200, exemplos claros, schemas completos |
+| Usabilidade | Mensagens de erro padronizadas e amigáveis                            | Mensagens de erro em JSON, campo "message" descritivo, sem stacktrace |
 
 ### 6. Automação de Testes
-| ID | Condição | Resultado Esperado | Camada |
-|----|----------|-------------------|--------|
-| AT1 | Criação e deleção de entidades | 201/200 | API |
-| AT2 | Login e uso de token | 200 | API |
-| AT3 | Fluxo completo CRUD | 200/201/204 | API |
+| ID  | User Story Relacionada | Condição de Teste Automatizado | Resultado Esperado | Camada |
+|-----|------------------------|-------------------------------|--------------------|--------|
+| US1 | Cadastro de tutores    | Dado que sou veterinário autenticado, quando envio POST /tutores com dados válidos, então recebo 201 e tutor criado | 201, tutor criado | API |
+| US2 | Cadastro de animais    | Dado que sou veterinário autenticado, quando envio POST /animais com dados válidos, então recebo 201 e animal criado | 201, animal criado | API |
+| US3 | Cadastro de receitas   | Dado que sou veterinário autenticado, quando envio POST /receitas com dados válidos, então recebo 201 e receita criada | 201, receita criada | API |
+| US4 | Edição/Exclusão        | Dado que sou veterinário autenticado, quando envio PUT/DELETE em entidades existentes, então recebo 200 e entidade alterada/removida | 200, entidade alterada/removida | API |
+| US5 | Visualização (tutor)   | Dado que sou tutor autenticado, quando acesso GET /animais/:id e GET /receitas/:animalId dos meus animais, então recebo 200 e dados corretos | 200, dados corretos | API |
+| US6 | Autenticação           | Dado que envio POST /auth/login com credenciais válidas, então recebo 200 e token JWT; quando acesso rota protegida sem token, recebo 401 | 200 com token, 401 sem token | API |
 
 ### 7. Mapeamento dos Dados de Teste
 - Testes Manuais e Automatizados do tipo API Rest/Swagger
